@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="row">
+
+    <div class="col-md-8 mx-auto my-2">
+         <h1>List of Routes</h1>
+        <table class="table table-striped">
+            {% if page_obj %}
+            <tr>
+                <th>Route name</th>
+                <th>From city</th>
+                <th>To city</th>
+                <th>Travel time</th>
+            </tr>
+            {% else %}
+            <p>Routes not found!</p>
+
+            {% endif %}
+               {% for object in page_obj %}
+                    {% if object.passenger == request.user %}
+                         <tr>
+                             <td><a style="text-decoration:none" href="{% url 'route_detail' object.pk %}">{{object.name}}</a></td>
+                             <td>{{object.from_city}}</td>
+                             <td>{{object.to_city}}</td>
+                             <td>{{object.travel_times}} hours</td>
+                        </tr>
+                    {% else %}
+                        <p>Routes not found!</p>
+                    {% endif %}
+
+                {% endfor %}
+        </table>
+    </div>
+</div>
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+      <li class="page-item">
+         {% if page_obj.has_previous %}
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        {% endif %}
+    </li>
+      {% for page in page_obj.paginator.page_range %}
+            <li class="page-item {% if page == page_obj.number %}active{% endif %}"><a class="page-link" href="?page={{page}}">{{page}}</a></li>
+      {% endfor %}
+    <li class="page-item">
+         {% if page_obj.has_next %}
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        {% endif %}
+    </li>
+  </ul>
+</nav>
+
+
+{% endblock %}

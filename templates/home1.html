@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block gif %}
+<link rel="stylesheet" href="{% static 'css/gif.css' %}">
+{% endblock gif %}
+{% block content %}
+{% load static %}
+
+<div class="row">
+    <h3 style="margin-left:450px"><i class="fa fa-train" aria-hidden="true"></i> Lets Travel!</h3>
+    <div class="col-md-4" style="margin-left:450px">
+
+        <form method="POST" action="{% url 'find_routes' %}" style="margin-bottom:25px;">{% csrf_token %}
+              {{form.as_p}}
+            <input type="submit" value="qidiruv" class="btn btn-primary btn-sm">
+        </form>
+    </div>
+</div>
+{% endblock content %}
+

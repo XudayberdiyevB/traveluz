@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+<h1>Train information</h1>
+<div class="row">
+    <div class="col-md">
+        <table class="table table-striped">
+            <tr>
+                <th>Train number</th>
+                <th>From city</th>
+                <th>To city</th>
+                <th>Travel time</th>
+            </tr>
+
+             <tr>
+                 <td>{{object.name}}</td>
+                 <td>{{object.from_city}}</td>
+                 <td>{{object.to_city}}</td>
+                 <td>{{object.travel_time}} hours</td>
+             </tr>
+
+        </table>
+    </div>
+</div>
+
+<!--detail page gorod-->
+<div class="row">
+    <div class="col-md-4">
+        <a href="{% url 'trains:home' %}" class="btn btn-primary btn-sm">List of cities</a>
+    </div>
+</div>
+</div>
+
+{% endblock %}

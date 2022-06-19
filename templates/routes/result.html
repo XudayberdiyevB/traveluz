@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% load static %}
+<div class="row">
+    <div class="col-md-8 mx-auto">
+{% if routes %}
+
+            <h3><i class="fa fa-map-marker" aria-hidden="true"></i> Results of search{% if routes|length != 1 %} {% endif %}
+                 {{ cities.from_city.name }} from {{ cities.to_city.name }} to <a style="text-decoration:none" href="{% url 'find_routes'%}">search again</a></h3>
+        <br>
+            {% for route in page_obj %}
+                <form action="{% url 'add_routes' %}" method="post"> {% csrf_token %}
+                    <input type="hidden" name="from_city" value="{{ cities.from_city.id }}">
+                    <input type="hidden" name="to_city" value="{{ cities.to_city.id }}">
+                    <input type="hidden" name="total_time" value="{{ route.total_time }}">
+                    <input type="hidden" name="trains"
+                           value="{% for train in route.trains%}{{ train.id }},{% endfor %}">
+                {% if forloop.first %}<h4>Routes list: count{{routes|length}}</h4><br> {% endif %}
+                <h5><i class="fa fa-clock-o" aria-hidden="true"></i> Travel time <u>{{ route.travel }} hours</u></h5>
+                    <div style=" border-left: 4px solid green;">
+                <table class="table" style="border-left: thin solid #A9A9A9;">
+                  <thead>
+                    <tr>
+                      <th scope="col"><i class="fa fa-map-signs" aria-hidden="true"></i> </th>
+                      <th scope="col">Maps of trains</th>
+
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for train in route.trains %}
+                    <tr>
+                      <th scope="row">{{ forloop.counter }}</th>
+                        <td><i class="fa fa-train" aria-hidden="true"></i> <u>Train {{ train.name }} </u> <b>{{ train.from_city.name }}</b> from <b>{{ train.to_city.name }}</b> to </td>
+
+                    </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
+                    </div>
+                    <button type="submit" class="btn btn-success">Save</button>
+                </form>
+        <br><br>
+
+            {% endfor %}
+
+    </div>
+</div>
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+      <li class="page-item">
+         {% if page_obj.has_previous %}
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        {% endif %}
+    </li>
+      {% for page in page_obj.paginator.page_range %}
+            <li class="page-item {% if page == page_obj.number %}active{% endif %}"><a class="page-link" href="?page={{page}}">{{page}}</a></li>
+      {% endfor %}
+    <li class="page-item">
+         {% if page_obj.has_next %}
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        {% endif %}
+    </li>
+  </ul>
+</nav>
+ {% endif %}
+
+{% endblock %}

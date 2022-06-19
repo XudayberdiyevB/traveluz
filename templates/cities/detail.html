@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block gif %}
+
+
+
+
+{% endblock gif %}
+
+
+{% block content %}
+
+    <div class="container">
+        <h1>About {{ city.name }} city</h1>
+        <div class="row pb-0">
+            <div class="col-md">
+                <p>{{ city.about_city|safe }}</p>
+            </div>
+
+        </div>
+
+        <!--detail page gorod-->
+        <div class="row mb-3">
+            <div class="col-md-4">
+                <a href="{% url 'cities:home' %}" class="btn btn-primary btn-sm">List of Cities</a>
+                <a href="{% url 'find_routes' %}" class="btn btn-outline-success btn-sm">Travel</a>
+            </div>
+        </div>
+
+    </div>
+
+
+{% endblock %}

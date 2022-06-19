@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <form method="POST">{% csrf_token %}
+            Delete <b>{{object.name}}</b> train ?<br>
+            <input type="submit" value="Submit" class="btn btn-danger btn-sm"> &nbsp; <a href="{% url 'cities:home' %}" class="btn btn-primary btn-sm">Cancel</a>
+        </form>
+    </div>
+</div>
+{% endblock content %}

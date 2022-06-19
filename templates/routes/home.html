@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{%load static%}
+{% load crispy_forms_tags %}
+ {% block gif %}
+    {% if not routes %}
+        <style>
+        .gif {
+        background-image:url('{% static 'gif/homegif.gif' %}');
+        background-size:50%;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        height:100%;
+        width:100%;
+        position:fixed; max-height:x; overflow: hidden;
+     }
+    </style>
+    <link rel="stylesheet" href="{% static 'css/chatw.css' %}">
+    {% endif %}
+ {% endblock gif %}
+{% block content %}
+{% load static %}
+
+
+<div class="row gif">
+    <div class="col-md-8 mx-auto">
+{% if routes %}
+            <h3><i class="fa fa-map-marker" aria-hidden="true"></i> Results of search{% if routes|length != 1 %}{% endif %}
+                 {{ cities.from_city.name }} from {{ cities.to_city.name }} to <a style="text-decoration:none;font-size:25px" href="{% url 'find_routes'%}">Please try again</a></h3>
+        <br>
+            {% for route in routes %}
+                <form action="{% url 'add_routes' %}" method="post"> {% csrf_token %}
+                    <input type="hidden" value="{{end_date}}" name="end_date">
+                    <input type="hidden" name="from_city" value="{{ cities.from_city.id }}">
+                    <input type="hidden" name="to_city" value="{{ cities.to_city.id }}">
+                    <input type="hidden" name="total_time" value="{{ route.total_time }}">
+                    <input type="hidden" name="trains" value="{% for train in route.trains%}{{ train.id }},{% endfor %}">
+                    {% if forloop.first %}
+                        <h4>List of routes: count {{routes|length}}</h4><br>
+                    {% endif %}
+                    <h5><i class="fa fa-clock-o" aria-hidden="true"></i> Travel time  <u>{{ route.total_time }} hours</u></h5>
+                    <div style=" border-left: 4px solid green;">
+                        <table class="table" style="border-left: thin solid #A9A9A9;">
+                          <thead>
+                            <tr>
+                              <th scope="col"><i class="fa fa-map-signs" aria-hidden="true"></i> </th>
+                              <th scope="col">Maps of trains</th>
+
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {% for train in route.trains %}
+                            <tr>
+                              <th scope="row">{{ forloop.counter }}</th>
+                                <td><i class="fa fa-train" aria-hidden="true"></i> <u>Train {{ train.name }} </u> <b>{{ train.from_city.name }}</b> from <b>{{ train.to_city.name }}</b> to {{train.start_train_day}}</td>
+
+                            </tr>
+                          {% endfor %}
+                          </tbody>
+                        </table>
+                    </div>
+                    <button type="submit" class="btn btn-outline-primary">Travel</button>
+                </form>
+        <br><br>
+            {% endfor %}
+
+    </div>
+
+
+
+</div>
+
+<!--form pastda qidiruv -->
+
+{% else %}
+
+<div class="row">
+    <h3 style="margin-left:400px"><i class="fas fa-route"></i> Lets Travel...</h3>
+    <div class="col-md-4" style="margin-left:400px">
+
+        <form method="POST" action="{% url 'find_routes' %}" style="margin-bottom:25px;">{% csrf_token %}
+              {{form.as_p}}
+            <input type="submit" value="Search" class="btn btn-primary btn-sm">
+        </form>
+    </div>
+</div>
+<button style="background-image: url('')" class="open-button btn" onclick="openForm()"><img style="height:50px;width:50px" src="{% static 'img/support.png' %}" alt=""></button>
+
+
+<div class="chat-popup" id="myForm">
+  <form action="/action_page.php" class="form-container">
+    <h3>Operator</h3>
+
+    <label for="msg"><b>Message</b></label>
+    <textarea placeholder="Write your message here" name="msg" required></textarea>
+
+    <button type="submit" class="btn btn-btn-danger btn-sm">Send</button>
+    <button type="button" class="btn cancel btn-outline-secondary btn-sm" onclick="closeForm()">Close</button>
+  </form>
+</div>
+
+<script>
+function openForm() {
+  document.getElementById("myForm").style.display = "block";
+}
+
+function closeForm() {
+  document.getElementById("myForm").style.display = "none";
+}
+</script>
+
+
+{% endif %}
+<div class="clearfix"></div>
+{% endblock content %}
