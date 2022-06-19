@@ -122,7 +122,7 @@ class RouteDeleteView(LoginRequiredMixin, SuccessMessageMixin, DeleteView):
     model = Route
     success_url = reverse_lazy('home')
     redirect_field_name = 'login'
-    success_message = 'Delete route fro list'
+    success_message = 'Delete route of list'
 
     def post(self, request, *args, **kwargs):
         messages.success(request, 'Delete route!')
