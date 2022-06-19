@@ -24,7 +24,7 @@
                  <td>{{object.from_city}}</td>
                  <td>{{object.to_city}}</td>
                  <td>{{object.travel_times}} hours</td>
-                 <td><a href="../static/tickets/{{object.ticket_number}}.jpg" style="text-decoration:none" download="">Download <i class="fas fa-download"></i></a></td>
+                 <td><a href="../media/tickets/{{object.ticket_number}}.jpg" style="text-decoration:none" download="">Download <i class="fas fa-download"></i></a></td>
                  <td>
 
                      {% for train in object.trains.all %}
